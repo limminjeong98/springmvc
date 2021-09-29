@@ -42,7 +42,7 @@ public class MappingClassController {
      * DELETE /mapping/users/{userId}
      */
     @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable String userId){
+    public String deleteUser(@PathVariable String userId) {
         return "delete userId=" + userId;
     }
 }
