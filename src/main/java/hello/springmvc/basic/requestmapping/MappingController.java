@@ -2,6 +2,7 @@ package hello.springmvc.basic.requestmapping;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -75,9 +76,24 @@ public class MappingController {
      * params="mode!=debug"
      * params = {"mode=debug", "data=good"}
      */
+    // localhost:8080/mapping-param?mode=debug
     @GetMapping(value = "/mapping-param", params = "mode=debug")
     public String mappingParam() {
         log.info("mappingParam");
+        return "ok";
+    }
+
+    /**
+     * 특정 헤더로 추가 매핑
+     * headers="mode"
+     * headers="!mode"
+     * headers="mode=debug"
+     * headers="mode!=debug"
+     */
+    // localhost:8080/mapping-header로 GET요청 보내고, postman에서 headers에 mode = debug로 항목 추가
+    @GetMapping(value = "/mapping-header", headers = "mode=debug")
+    public String mappingHeader() {
+        log.info("mappingHeader");
         return "ok";
     }
 
@@ -89,23 +105,12 @@ public class MappingController {
      * consumes="*\/*"
      * MediaType.APPLICATION_JSON_VALUE
      */
-    @PostMapping(value = "/mapping-consume", consumes="application/json")
+    // POST localhost:8080/mapping-consume
+    // 요청헤더의 Content type
+    // @PostMapping(value = "/mapping-consume", consumes="application/json")
+    @PostMapping(value = "/mapping-consume", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String mappingConsumes() {
         log.info("mappingConsumes");
-        return "ok";
-    }
-
-
-    /**
-     * 특정 헤더로 추가 매핑
-     * headers="mode"
-     * headers="!mode"
-     * headers="mode=debug"
-     * headers="mode!=debug"
-     */
-    @GetMapping(value = "/mapping-header", headers = "mode=debug")
-    public String mappingHeader() {
-        log.info("mappingHeader");
         return "ok";
     }
 
@@ -116,9 +121,21 @@ public class MappingController {
      * produces = "text/*"
      * produces = "*\/*"
      */
-    @PostMapping(value = "/mapping-produce", produces = "text/html")
+    // POST localhost:8080/mapping-produce
+    // 요청헤더의 Accept type
+    // Headers의 Accept를 "application/json"으로 요청 보내면 406 에러
+    // @PostMapping(value = "/mapping-produce", produces = "text/html")
+    @PostMapping(value = "/mapping-produce", produces = MediaType.TEXT_HTML_VALUE)
     public String mappingProduces() {
         log.info("mappingProduces");
         return "ok";
     }
+    // HTTP 요청의 Accept 헤더를 기반으로 미디어 타입으로 매핑한다
+    // 맞지 않으면 HTTP 406 상태코드(Not Acceptable)을 반환한다
+    /**
+     * produces = "text/plain"
+     * produces = {"text/plain", "application/*"}
+     * produces = MediaType.TEXT_PLAIN_VALUE
+     * produces = "text/plain;charset=UTF-8"
+     */
 }
