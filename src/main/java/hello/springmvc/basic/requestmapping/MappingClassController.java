@@ -10,8 +10,8 @@ public class MappingClassController {
      * GET /mapping/users
      */
     @GetMapping
-    public String uses() {
-        return "get-users";
+    public String users() {
+        return "get users";
     }
 
     /**
