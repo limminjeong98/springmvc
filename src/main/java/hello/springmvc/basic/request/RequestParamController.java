@@ -42,6 +42,8 @@ public class RequestParamController {
 
         log.info("username={}, age={}", memberName, memberAge);
         return "ok";
+        // @ResponseBody annotation이 있으면 @Controller annotation이 있어도 "ok"라는 이름의 view를 조회하고 반환하는 게 아니라
+        // "ok"라는 String을 반환함. 즉 @RestController와 같은 효과
     }
 
     /**
@@ -72,9 +74,11 @@ public class RequestParamController {
      * @RequestParam.required /request-param -> username 이 없으므로 예외
      * <p>
      * /request-param?username= -> 빈 문자로 통과
+     * ''와 null은 다르다
      * <p>
      * /request-param
-     * int age -> null 을 int에 입력하는 것은 불가능, 따라서 Integer 변경해야 함 (또는 다음에 나오는  defaultValue 사용)
+     * 필수 입력값인 username만 입력하고, age를 입력안해도 되는 경우 age의 기본값을 null로 지정해줘야함
+     * int age -> null 을 int에 입력하는 것은 불가능, 따라서 객체 Integer로 타입을 변경해야 함 (또는 다음에 나오는 defaultValue 사용)
      */
     @ResponseBody
     @RequestMapping("/request-param-required")
@@ -102,6 +106,8 @@ public class RequestParamController {
      * @RequestParam Map, MultiValueMap
      * Map(key=value)
      * MultiValueMap(key=[value1, value2, ...] ex) (key=userIds, value=[id1, id2])
+     * http://localhost:8080/request-param-map
+     * 파라미터 아무것도 없이 이렇게만 보내도 오류가 안남 (username=null, age=null)으로 로그 출력됨
      */
     @ResponseBody
     @RequestMapping("/request-param-map")
